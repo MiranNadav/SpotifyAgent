@@ -1,0 +1,157 @@
+# SpotifyAgent Technical Rules & Requirements
+
+## Project Overview
+AI agent system in TypeScript that:
+- Fetches "Liked Songs" from Spotify
+- Uses AI to analyze songs (music type, mood)
+- Creates occasion-relevant playlists based on user input
+
+## Technical Stack
+- **Language**: TypeScript 5.x+
+- **Runtime**: Node.js 18+
+- **Package Manager**: npm or yarn
+- **Testing**: Jest + TypeScript
+- **API Integration**: Spotify Web API
+- **AI Service**: OpenAI API (GPT-4 or similar)
+- **Environment**: Node.js with TypeScript compilation
+
+## Code Standards
+
+### TypeScript
+- Strict mode enabled
+- Use ES modules or CommonJS consistently
+- Avoid `any` type - use proper types or `unknown`
+- Use interfaces for API responses
+- Prefer type unions over enums for better type inference
+- Use async/await over promises
+
+### Code Organization
+- Follow clean architecture principles
+- Separate concerns: API clients, AI service, business logic, data models
+- Use dependency injection where appropriate
+- Implement proper error handling with custom error types
+- Use environment variables for configuration (never hardcode secrets)
+
+### Naming Conventions
+- Files: kebab-case (e.g., `spotify-client.ts`)
+- Classes: PascalCase (e.g., `SpotifyClient`)
+- Functions/variables: camelCase (e.g., `fetchLikedSongs`)
+- Constants: UPPER_SNAKE_CASE (e.g., `API_BASE_URL`)
+- Types/Interfaces: PascalCase with descriptive names
+
+### Testing Requirements
+- Unit tests for all business logic
+- Mock external APIs (Spotify, OpenAI)
+- Integration tests for key workflows
+- Achieve minimum 80% code coverage
+- Use descriptive test names: `describe('function name', () => it('should do X when Y'))`
+- Test error cases and edge cases
+
+## Architecture Requirements
+
+### Core Components
+1. **Spotify Client** (`src/clients/spotify-client.ts`)
+   - Authentication with OAuth 2.0
+   - Fetch liked songs with pagination
+   - Rate limiting handling
+   - Error handling and retries
+
+2. **AI Service** (`src/services/ai-service.ts`)
+   - Analyze song metadata (title, artist, album)
+   - Extract music type and mood
+   - Batch processing for efficiency
+   - Caching of AI responses to reduce API calls
+
+3. **Playlist Manager** (`src/services/playlist-manager.ts`)
+   - Filter songs by occasion
+   - Create playlists dynamically
+   - Handle playlist size limits
+   - Prioritize relevant songs
+
+4. **Data Models** (`src/models/`)
+   - Song, Playlist, Occasion types
+   - Type-safe data structures
+
+5. **Configuration** (`src/config/`)
+   - Environment variables
+   - API credentials management
+   - Default configuration values
+
+### File Structure
+```
+/
+├── src/
+│   ├── clients/          # External API clients
+│   ├── services/         # Business logic services
+│   ├── models/           # TypeScript types/interfaces
+│   ├── config/           # Configuration management
+│   ├── utils/            # Utility functions
+│   └── index.ts          # Main entry point
+├── tests/
+│   ├── unit/             # Unit tests
+│   ├── integration/      # Integration tests
+│   └── fixtures/         # Test data
+├── .env.example          # Environment template
+├── .gitignore
+├── package.json
+├── tsconfig.json
+├── jest.config.js
+└── README.md
+```
+
+## Security Requirements
+- Never commit secrets or API keys
+- Use environment variables for all credentials
+- Implement proper OAuth flow for Spotify
+- Store tokens securely
+- Validate all user inputs
+- Implement rate limiting to avoid API abuse
+
+## API Rate Limits
+- Spotify API: 600 requests per 30 seconds per app
+- OpenAI API: Pay attention to token limits per request
+- Implement exponential backoff for retries
+- Cache AI analysis results to minimize API calls
+
+## Error Handling
+- Use custom error classes
+- Log errors properly with context
+- Provide meaningful error messages
+- Handle network errors gracefully
+- Implement retry logic for transient failures
+
+## Code Quality
+- Use ESLint for code linting
+- Use Prettier for code formatting
+- Run tests before commits
+- Keep functions small and focused
+- Document complex logic
+- Use meaningful variable names
+
+## Performance
+- Batch AI requests when possible
+- Cache AI results for repeated songs
+- Implement pagination for large playlists
+- Use async/await for concurrent operations
+- Avoid unnecessary API calls
+
+## Dependencies
+- Minimal dependencies policy
+- Use official SDKs when available
+- Document why each dependency is needed
+- Keep dependencies updated and secure
+
+## Git Workflow
+- Use meaningful commit messages
+- One logical change per commit
+- Create feature branches for major features
+- Use pull requests for code review
+- Tag releases with semantic versioning
+
+## Documentation
+- Inline comments for complex logic
+- JSDoc comments for public APIs
+- Update README for setup changes
+- Document environment variables
+- Provide usage examples
+
